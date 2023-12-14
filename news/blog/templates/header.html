@@ -1,0 +1,15 @@
+<!-- blog/templates/header.html -->
+<header>
+    <div class="wrapper">
+        <nav>
+            <ul>
+                <a href="{% url 'home' %}">Главная страница</a>
+                <a href="{% url 'blogs' %}">Блоги</a>
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'logout' %}">Выйти</a>
+                <a href="{% url 'signup' %}">Зарегистрироваться</a>
+                <a href="/admin/">Администратор</a>
+            </ul>
+        </nav>
+    </div>
+</header>

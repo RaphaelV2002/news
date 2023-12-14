@@ -1,0 +1,8 @@
+.vscode/launch.json/
+.vs/
+.venv/
+news/news/__pycache__/
+news/blog/__pycache__/
+news/blog/migrations/
+news/db.sqlite3
+news/media/

@@ -1,0 +1,38 @@
+<!-- blog/templates/home.html -->
+{% extends "base.html" %}
+{% block title %}
+    Блоги
+{% endblock title %}
+{% block main %}
+    <div class="wrapper">
+        <div class='blog'>
+            {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+            {% if user.is_authenticated %}
+                <form class="form-horizontal"  method="post">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            {% else %}
+                <p id='auth_warning'>
+                    Для того, чтобы создать блог нужно <a href='{% url 'login' %}'>войти</a>.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="blog_section">
+            {% for blog in blogs %}
+                <div class="blog">
+                    <h3>
+                        <a href='{% url 'blog' blog_id=blog.id %}'>{{ blog.title }}</a>
+                    </h3>
+                    <p>{{ blog.author }} | {{ blog.added_at|date:'d.m.Y, H:i' }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock	 %}

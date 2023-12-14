@@ -1,0 +1,17 @@
+<!-- blog/templates/registration/signup.html -->
+{% extends 'base.html' %}
+{% block title %}
+    Регистрация
+{% endblock title %}
+{% block main %}
+    <div class='sign' id='signup'>
+        {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        <form class="form-horizontal" method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+{% endblock	 %}

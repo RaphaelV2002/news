@@ -1,0 +1,58 @@
+<!-- blog/templates/blog.html -->
+{% extends 'base.html' %}
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+{% block main %}
+    <div class='main_blog'>
+        {{ blog.title }}
+        <br>
+        <div id='main_blog_meta'>
+            <span id='main_blog_author'>{{ blog.author }}</span>
+            <span id='main_blog_data'>&nbsp;|&nbsp;{{ blog.added_at|date:'d.m.Y, H:i' }}</span>
+        </div>
+        {% if user == blog.author %}
+            <form class='delete_button'
+                  action='{% url 'delete_blog' blog_id=blog.id %}'
+                  method='post'>
+                {% csrf_token %}
+                <button type='submit'>Удалить</button>
+            </form>
+        {% endif %}
+    </div>
+    {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        {% if user.is_authenticated %}
+            <form class="form-horizontal"
+                  action='{% url 'blog' blog_id=blog.id %}'
+                  method="post" enctype="multipart/form-data">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Ответить</button>
+                </div>
+            </form>
+        {% else %}
+            <p id='auth_warning'>
+                Для того, чтобы написать новость нужно <a href='{% url 'login' %}'>войти</a>.
+            </p>
+        {% endif %}
+    </div>
+    {% for new in news %}
+        <div class='main_blog news'>
+            <h1 class='new_text'>{{ new.title }}</h1>
+            <p class='new_text'>{{ new.text }}</p>
+            <img src="{{ new.image.url }}" width="1000" height="500" >
+            <div id='main_blog_meta'>
+                <span id='main_blog_data'>{{ new.author }}&nbsp;|&nbsp;{{ new.added_at|date:'d.m.Y, H:i' }}</span>
+            </div>
+            {% if user == new.author %}
+                <form class='delete_button'
+                      action='{% url 'delete_new' new_id=new.id %}'
+                      method='post'>
+                    {% csrf_token %}
+                    <button type='submit'>Удалить</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

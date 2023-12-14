@@ -1,0 +1,25 @@
+<!-- blog/templates/home.html -->
+{% extends "base.html" %}
+{% block title %}
+    Главная страница
+{% endblock title %}
+<br>
+{% block main %}
+    <main>
+        <div class="wrapper">
+            <div id="new_section">
+                {% for new in news %}
+                    <div class="new">
+                        <h3>
+                            {{ new.title }}
+                            
+                        </h3>
+                        {{ new.text }}
+                        <img src="{{ new.image.url }}" width="1000" height="500" >
+                        <p>{{ new.author }} | {{ new.added_at|date:'d.m.Y, H:i' }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock	 %}

@@ -1,0 +1,22 @@
+<!-- blog/templates/registration/login.html -->
+{% extends 'base.html' %}
+{% block title %}
+    Вход
+{% endblock title %}
+{% block main %}
+    <div class='sign' id='signin'>
+        {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        <form class="form-horizontal" method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </div>
+        </form>
+        <p>
+            Нет аккаунта?
+            <br/>
+            Тогда <a href='{% url 'signup' %}'>зарегистрируйся</a>.
+        </p>
+    </div>
+{% endblock	 %}
