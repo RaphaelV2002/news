@@ -1,0 +1,19 @@
+<!-- blog/templates/create_new.html -->
+{% extends 'base.html' %}
+{% block title %}
+    Создание новости
+{% endblock %}
+{% block main %}
+{% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        {% if user.is_authenticated %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Создать новость</button>
+            </form>
+        {% else %}
+            <p id='auth_warning'>
+                Для того, чтобы написать новость нужно <a href='{% url 'login' %}'>войти</a>.
+            </p>
+        {% endif %}
+        {% endblock %}

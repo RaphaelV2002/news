@@ -45,6 +45,13 @@ def blog(request, *args, **kwargs):
     """Загружает страницу блога с новостями из этого блога и формой для создания новости."""
     blog = get_object_or_404(models.Blog, pk=kwargs["blog_id"])
     news = blog.new.all()
+
+    return render(request, "blog.html", {"news": news, "blog": blog})
+
+
+def create_new(request, *args, **kwargs):
+    """Загружает страницу создания новости."""
+    blog = get_object_or_404(models.Blog, pk=kwargs["blog_id"])
     if request.method == "POST":
         form = forms.NewForm(request.POST, request.FILES)
         if form.is_valid():
@@ -53,9 +60,28 @@ def blog(request, *args, **kwargs):
             new.author = request.user
             new.save()
             return HttpResponseRedirect(reverse("blog", kwargs={"blog_id": blog.id}))
+        else:
+            return render(request, "create_new.html", {"form": form, "blog": blog})
     else:
         form = forms.NewForm()
-    return render(request, "blog.html", {"form": form, "news": news, "blog": blog})
+    return render(request, "create_new.html", {"form": form, "blog": blog})
+
+
+def update_new(request, *args, **kwargs):
+    """Загружает страницу редактирования новости."""
+    new = get_object_or_404(models.New, pk=kwargs["new_id"])
+    if request.method == "POST":
+        form = forms.NewForm(request.POST, request.FILES, instance=new)
+        if form.is_valid():
+            new = form.save()
+            return HttpResponseRedirect(
+                reverse("blog", kwargs={"blog_id": new.blog.id})
+            )
+        else:
+            return render(request, "create_new.html", {"form": form, "new": new})
+    else:
+        form = forms.NewForm(instance=new)
+    return render(request, "create_new.html", {"form": form, "new": new})
 
 
 def delete_blog(request, *args, **kwargs):

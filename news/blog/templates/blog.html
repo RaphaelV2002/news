@@ -19,23 +19,13 @@
                 <button type='submit'>Удалить</button>
             </form>
         {% endif %}
+        <form method="get" action="{% url 'create_new' blog_id=blog.id %}">
+            {% csrf_token %}
+            <button type="submit" class="create_new_button">Создать новость</button>
+        </form>
+        
     </div>
-    {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
-        {% if user.is_authenticated %}
-            <form class="form-horizontal"
-                  action='{% url 'blog' blog_id=blog.id %}'
-                  method="post" enctype="multipart/form-data">
-                {{ form.as_p }}
-                {% csrf_token %}
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Ответить</button>
-                </div>
-            </form>
-        {% else %}
-            <p id='auth_warning'>
-                Для того, чтобы написать новость нужно <a href='{% url 'login' %}'>войти</a>.
-            </p>
-        {% endif %}
+    
     </div>
     {% for new in news %}
         <div class='main_blog news'>
@@ -51,6 +41,10 @@
                       method='post'>
                     {% csrf_token %}
                     <button type='submit'>Удалить</button>
+                </form>
+                <form method="get" action="{% url 'update_new' new_id=new.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="update_new_button">Изменить новость</button>
                 </form>
             {% endif %}
         </div>

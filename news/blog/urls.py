@@ -13,5 +13,11 @@ urlpatterns = [
     path("blog/<int:blog_id>/", views.blog, name="blog"),
     path("blogs/", views.blogs, name="blogs"),
     path("blog/<int:blog_id>/delete/", views.delete_blog, name="delete_blog"),
-    path("blog/delete_new/<int:new_id>/", views.delete_new, name="delete_new"),
+    path("blog/<int:blog_id>/create_new/", views.create_new, name="create_new"),
+    path(
+        "blog/<int:new_id>/delete_new/",
+        views.delete_new,
+        name="delete_new",
+    ),
+    path("blog/<int:new_id>/update/", views.update_new, name="update_new"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
