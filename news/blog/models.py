@@ -24,7 +24,7 @@ class New(models.Model):
     objects = NewManager()
     title = models.CharField(max_length=50)
     text = models.TextField()
-    image = models.ImageField(upload_to="media/images")
+    image = models.ImageField(upload_to="media/images", blank=True)
     added_at = models.DateTimeField(blank=True, auto_now_add=True)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="new")
     author = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -15,7 +15,9 @@
                             
                         </h3>
                         {{ new.text }}
-                        <img src="{{ new.image.url }}" width="1000" height="500" >
+                        {% if new.image %}
+                            <img src="{{ new.image.url }}" width="1000" height="500">
+                        {% endif %}
                         <p>{{ new.author }} | {{ new.added_at|date:'d.m.Y, H:i' }}</p>
                     </div>
                 {% endfor %}

@@ -7,7 +7,7 @@
     <div class="wrapper">
         <div class='blog'>
             {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and user.is_staff %}
                 <form class="form-horizontal"  method="post">
                     {{ form.as_p }}
                     {% csrf_token %}
@@ -17,7 +17,7 @@
                 </form>
             {% else %}
                 <p id='auth_warning'>
-                    Для того, чтобы создать блог нужно <a href='{% url 'login' %}'>войти</a>.
+                    Для того, чтобы создать блог нужно <a href='{% url 'login' %}'>войти</a> как администратор.
                 </p>
             {% endif %}
         </div>

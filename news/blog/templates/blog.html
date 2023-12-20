@@ -31,7 +31,9 @@
         <div class='main_blog news'>
             <h1 class='new_text'>{{ new.title }}</h1>
             <p class='new_text'>{{ new.text }}</p>
-            <img src="{{ new.image.url }}" width="1000" height="500" >
+            {% if new.image %}
+                <img src="{{ new.image.url }}" width="1000" height="500">
+            {% endif %}
             <div id='main_blog_meta'>
                 <span id='main_blog_data'>{{ new.author }}&nbsp;|&nbsp;{{ new.added_at|date:'d.m.Y, H:i' }}</span>
             </div>
