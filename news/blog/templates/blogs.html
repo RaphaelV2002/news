@@ -4,11 +4,13 @@
     Блоги
 {% endblock title %}
 {% block main %}
+<div class="blogs">
     <div class="wrapper">
-        <div class='blog'>
+        <div class='new_blog'>
             {% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
             {% if user.is_authenticated and user.is_staff %}
                 <form class="form-horizontal"  method="post">
+                    <h3>Создать блог</h3>
                     {{ form.as_p }}
                     {% csrf_token %}
                     <div class="form-actions">
@@ -23,16 +25,16 @@
         </div>
     </div>
     <div class="wrapper">
-        <div id="blog_section">
+        <div class="blog_section" id="blog_section">
             {% for blog in blogs %}
                 <div class="blog">
                     <h3>
                         <a href='{% url 'blog' blog_id=blog.id %}'>{{ blog.title }}</a>
                     </h3>
-                    <p>{{ blog.author }} | {{ blog.added_at|date:'d.m.Y, H:i' }}</p>
+                    <p class="footer">{{ blog.author }} | {{ blog.added_at|date:'d.m.Y, H:i' }}</p>
                 </div>
             {% endfor %}
         </div>
     </div>
-
+</div>
 {% endblock	 %}

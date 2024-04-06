@@ -3,20 +3,44 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import views, login, logout
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from . import models
 from . import forms
+from django.db.models import Q
 
 
-def home(request, *args, **kwargs):
-    """Загружает главную страницу с пятью последними новостями, отсортированным по времени публикации."""
-    news = models.New.objects.new()[:5]
-    return render(
-        request,
-        "home.html",
-        {
-            "news": news,
-        },
-    )
+def home(request):
+    """Загружает главную страницу с новостями, отсортированными по времени публикации."""
+    sort_by = request.GET.get("sort_by")
+    search = request.GET.get("search")
+
+    news = models.New.objects.all()
+
+    if search:
+        news = news.filter(Q(title__icontains=search) | Q(text__icontains=search))
+
+    if sort_by == "latest":
+        news = news.order_by("-added_at")
+    elif sort_by == "oldest":
+        news = news.order_by("added_at")
+    elif sort_by == "title":
+        news = news.order_by("title")
+
+    paginator = Paginator(news, 5)
+    page = request.GET.get("page")
+    try:
+        news = paginator.page(page)
+    except PageNotAnInteger:
+        news = paginator.page(1)
+    except EmptyPage:
+        news = paginator.page(paginator.num_pages)
+    return render(request, "home.html", {"news": news})
+
+
+def news_table(request):
+    """Загружает страницу с таблицей новостей."""
+    news = models.New.objects.all()
+    return render(request, "news_table.html", {"news": news})
 
 
 def blogs(request, *args, **kwargs):

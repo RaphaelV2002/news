@@ -4,14 +4,18 @@
     {{ blog.title }}
 {% endblock %}
 {% block main %}
+<div class="wrapper">
     <div class='main_blog'>
-        {{ blog.title }}
-        <br>
-        <div id='main_blog_meta'>
-            <span id='main_blog_author'>{{ blog.author }}</span>
-            <span id='main_blog_data'>&nbsp;|&nbsp;{{ blog.added_at|date:'d.m.Y, H:i' }}</span>
-        </div>
-        {% if user == blog.author %}
+        <h3>
+            {{ blog.title }}
+        </h3>
+       
+        <div class="buttons">
+        {% if user == blog.author or user.is_staff %}
+            <form method="get" action="{% url 'create_new' blog_id=blog.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button">Создать новость</button>
+            </form>
             <form class='delete_button'
                   action='{% url 'delete_blog' blog_id=blog.id %}'
                   method='post'>
@@ -19,36 +23,36 @@
                 <button type='submit'>Удалить</button>
             </form>
         {% endif %}
-        <form method="get" action="{% url 'create_new' blog_id=blog.id %}">
-            {% csrf_token %}
-            <button type="submit" class="create_new_button">Создать новость</button>
-        </form>
-        
+        </div>
+        <p class="footer">{{ blog.author }} | {{ blog.added_at|date:'d.m.Y, H:i' }}</p>
     </div>
-    
-    </div>
+</div>
+    <div class="wrapper">
     {% for new in news %}
-        <div class='main_blog news'>
-            <h1 class='new_text'>{{ new.title }}</h1>
-            <p class='new_text'>{{ new.text }}</p>
+        <div class='new'>
             {% if new.image %}
                 <img src="{{ new.image.url }}" width="1000" height="500">
             {% endif %}
-            <div id='main_blog_meta'>
-                <span id='main_blog_data'>{{ new.author }}&nbsp;|&nbsp;{{ new.added_at|date:'d.m.Y, H:i' }}</span>
-            </div>
+            <h1 class='new_text'>{{ new.title }}</h1>
+            <p class='new_text'>{{ new.text }}</p>
+            
+
             {% if user == new.author %}
-                <form class='delete_button'
+                <div class='buttons'>
+                    <form method="get" action="{% url 'update_new' new_id=new.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="update_new_button">Изменить новость</button>
+                    </form>
+                <form 
                       action='{% url 'delete_new' new_id=new.id %}'
                       method='post'>
                     {% csrf_token %}
                     <button type='submit'>Удалить</button>
                 </form>
-                <form method="get" action="{% url 'update_new' new_id=new.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="update_new_button">Изменить новость</button>
-                </form>
+            </div>
             {% endif %}
+            <p class="footer">{{ new.author }} | {{ new.added_at|date:'d.m.Y, H:i' }}</p>
         </div>
     {% endfor %}
+    </div>
 {% endblock %}

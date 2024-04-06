@@ -4,7 +4,11 @@
     Создание новости
 {% endblock %}
 {% block main %}
-{% for e in form.non_field_errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<div class="wrapper">
+<div class="create_new">
+{% for e in form.non_field_errors %}
+<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+
         {% if user.is_authenticated and user.is_staff %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -16,4 +20,6 @@
                 Для того, чтобы написать новость нужно <a href='{% url 'login' %}'>войти</a> как администратор.
             </p>
         {% endif %}
-        {% endblock %}
+    </div>
+</div>
+{% endblock %}
